@@ -22,4 +22,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: CuboBuilder/custom-yolk:latest
+          tags: cubobuilder/custom-yolk:latest
