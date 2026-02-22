@@ -13,7 +13,7 @@ jobs:
       - name: Test - Identity & Sudo
         run: |
           docker run --rm \
-            -e STARTUP="sudo apt update && sudo apt install -y neofetch && neofetch --off && whoami" \
+            -e STARTUP="sudo apt update && sudo apt install -y toilet && neofetch --off && toilet test && whoami" \
             cubobuilder/nebula-yolk:latest
 
       - name: Test - Node & Python Versions
