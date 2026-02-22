@@ -1,4 +1,4 @@
-name: Test Yolk Integirty
+name: Test Yolk
 
 on:
   workflow_dispatch:
@@ -16,7 +16,7 @@ jobs:
       - name: Test - System Info & Identity
         run: |
           docker run --rm \
-            -e STARTUP="whoami && id && sudo apt update && sudo apt install -y neofetch && neofetch --off" \
+            -e STARTUP="sudo apt update && sudo apt install -y neofetch && neofetch && whoami && id && " \
             local-yolk
 
       - name: Test - Node.js & NPM
