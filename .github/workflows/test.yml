@@ -1,0 +1,27 @@
+name: Debug Yolk via SSH
+on: workflow_dispatch
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Start Custom Yolk
+        run: |
+          docker run -d --name test-container \
+            -e STARTUP="sleep infinity" \
+            -p 2222:22 \
+            cubobuilder/custom-yolk:latest
+          
+      - name: Setup Cloudflared Tunnel
+        id: tunnel
+        run: |
+          wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
+          sudo dpkg -i cloudflared-linux-amd64.deb
+          cloudflared tunnel --url tcp://localhost:2222 &
+          sleep 5
+
+      - name: Keep Alive
+        run: sleep 3600
