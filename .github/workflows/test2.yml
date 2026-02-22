@@ -1,0 +1,29 @@
+name: Pterodactyl Yolk Test 2
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull Image from Docker Hub
+        run: docker pull cubobuilder/nebula-yolk:latest
+
+      - name: Test - Identity & Sudo
+        run: |
+          docker run --rm \
+            -e STARTUP="whoami && sudo apt update && sudo apt install -y neofetch && neofetch --off" \
+            cubobuilder/nebula-yolk:latest
+
+      - name: Test - Node & Python Versions
+        run: |
+          docker run --rm \
+            -e STARTUP="node -v && python3 --version" \
+            cubobuilder/nebula-yolk:latest
+
+      - name: Test - FFmpeg Performance
+        run: |
+          docker run --rm \
+            -e STARTUP="ffmpeg -version | head -n 1" \
+            cubobuilder/nebula-yolk:latest
