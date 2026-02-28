@@ -23,6 +23,11 @@ RUN apt update && apt install -y \
     && apt update && apt install -y nodejs \
     && apt clean && rm -rf /var/lib/apt/lists/*
 
+RUN mkdir -p /etc/apt/keyrings \
+    && curl -fsSL https://packages.adoptium.net/artifactory/api/gpg/key/public | gpg --dearmor -o /etc/apt/keyrings/adoptium.gpg \
+    && echo "deb [signed-by=/etc/apt/keyrings/adoptium.gpg] https://packages.adoptium.net/artifactory/deb $(. /etc/os-release && echo $VERSION_CODENAME) main" > /etc/apt/sources.list.d/adoptium.list \
+    && apt update && apt install -y temurin-8-jre
+
 RUN useradd -m -d /home/container -u 999 -s /bin/bash container
 
 USER container
