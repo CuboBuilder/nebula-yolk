@@ -14,3 +14,5 @@ if [ $? -ne 0 ]; then
     echo -e "\033[1;31mStartup command failure.\033[0m"
     exit 1
 fi
+
+wait
