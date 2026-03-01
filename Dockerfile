@@ -25,16 +25,18 @@ RUN apt update && apt install -y \
 RUN mkdir -p /etc/apt/keyrings \
     && curl -fsSL https://packages.adoptium.net/artifactory/api/gpg/key/public | gpg --dearmor -o /etc/apt/keyrings/adoptium.gpg \
     && echo "deb [signed-by=/etc/apt/keyrings/adoptium.gpg] https://packages.adoptium.net/artifactory/deb $(. /etc/os-release && echo $VERSION_CODENAME) main" > /etc/apt/sources.list.d/adoptium.list \
-    && apt update && apt install -y temurin-8-jre temurin-17-jre temurin-21-jre \
+    && apt update && apt install -y temurin-8-jre temurin-17-jre temurin-21-jre temurin-25-jre \
     && update-alternatives --install /usr/bin/java java /usr/lib/jvm/temurin-8-jre-amd64/bin/java 80 \
     && update-alternatives --install /usr/bin/java java /usr/lib/jvm/temurin-17-jre-amd64/bin/java 170 \
     && update-alternatives --install /usr/bin/java java /usr/lib/jvm/temurin-21-jre-amd64/bin/java 210 \
+    && update-alternatives --install /usr/bin/java java /usr/lib/jvm/temurin-25-jre-amd64/bin/java 160 \
     && update-alternatives --set java /usr/lib/jvm/temurin-21-jre-amd64/bin/java \
     && apt clean && rm -rf /var/lib/apt/lists/*
 
 RUN echo 'alias java8="/usr/lib/jvm/temurin-8-jre-amd64/bin/java"' >> /etc/bash.bashrc && \
     echo 'alias java17="/usr/lib/jvm/temurin-17-jre-amd64/bin/java"' >> /etc/bash.bashrc && \
     echo 'alias java21="/usr/lib/jvm/temurin-21-jre-amd64/bin/java"' >> /etc/bash.bashrc && \
+    echo 'alias java25="/usr/lib/jvm/temurin-25-jre-amd64/bin/java"' >> /etc/bash.bashrc && \
     echo 'alias java="java21"' >> /etc/bash.bashrc
 
 RUN useradd -m -d /home/container -u 999 -s /bin/bash container
