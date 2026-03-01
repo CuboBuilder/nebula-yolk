@@ -9,7 +9,6 @@ RUN rm -rf /etc/apt/sources.list.d/* && \
 
 RUN apt update && apt install -y \
     curl ca-certificates gnupg iproute2 git \
-    openjdk-17-jre-headless \
     ffmpeg python3 python3-pip python3-venv \
     build-essential gcc g++ make cmake \
     zip unzip bzip2 tar gzip \
@@ -26,7 +25,12 @@ RUN apt update && apt install -y \
 RUN mkdir -p /etc/apt/keyrings \
     && curl -fsSL https://packages.adoptium.net/artifactory/api/gpg/key/public | gpg --dearmor -o /etc/apt/keyrings/adoptium.gpg \
     && echo "deb [signed-by=/etc/apt/keyrings/adoptium.gpg] https://packages.adoptium.net/artifactory/deb $(. /etc/os-release && echo $VERSION_CODENAME) main" > /etc/apt/sources.list.d/adoptium.list \
-    && apt update && apt install -y temurin-8-jre
+    && apt update && apt install -y temurin-8-jre temurin-17-jre temurin-21-jre \
+    && update-alternatives --install /usr/bin/java java /usr/lib/jvm/temurin-8-jre-amd64/bin/java 80 \
+    && update-alternatives --install /usr/bin/java java /usr/lib/jvm/temurin-17-jre-amd64/bin/java 170 \
+    && update-alternatives --install /usr/bin/java java /usr/lib/jvm/temurin-21-jre-amd64/bin/java 210 \
+    && update-alternatives --set java /usr/lib/jvm/temurin-21-jre-amd64/bin/java \
+    && apt clean && rm -rf /var/lib/apt/lists/*
 
 RUN useradd -m -d /home/container -u 999 -s /bin/bash container
 
