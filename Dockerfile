@@ -32,6 +32,11 @@ RUN mkdir -p /etc/apt/keyrings \
     && update-alternatives --set java /usr/lib/jvm/temurin-21-jre-amd64/bin/java \
     && apt clean && rm -rf /var/lib/apt/lists/*
 
+RUN echo 'alias java8="/usr/lib/jvm/temurin-8-jre-amd64/bin/java"' >> /etc/bash.bashrc && \
+    echo 'alias java17="/usr/lib/jvm/temurin-17-jre-amd64/bin/java"' >> /etc/bash.bashrc && \
+    echo 'alias java21="/usr/lib/jvm/temurin-21-jre-amd64/bin/java"' >> /etc/bash.bashrc && \
+    echo 'alias java="java21"' >> /etc/bash.bashrc
+
 RUN useradd -m -d /home/container -u 999 -s /bin/bash container
 
 USER container
